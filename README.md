@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Erich Krause Catalog
 
-## Getting Started
+## Описание проекта
+Интернет-каталог канцелярских товаров Erich Krause - современное веб-приложение на Next.js 14 с админ-панелью и полнофункциональным каталогом товаров.
 
-First, run the development server:
+## Технологии
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Backend**: Next.js API Routes
+- **База данных**: PostgreSQL с Prisma ORM
+- **Аутентификация**: NextAuth.js
+- **Стили**: CSS Modules, Tailwind CSS
+- **Развертывание**: Vercel
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Функционал
+
+### Для пользователей:
+- 📱 Адаптивный дизайн для всех устройств
+- 🔍 Поиск и фильтрация товаров
+- 📂 Категоризация товаров
+- 🛒 Корзина покупок
+- ❤️ Избранное
+- 👤 Личный кабинет
+- 📝 Блог с полезными статьями
+
+### Для администраторов:
+- 🛡️ Защищенная админ-панель
+- 📦 Управление товарами (CRUD)
+- 📁 Управление категориями
+- 🖼️ Загрузка изображений
+- 📊 Статистика
+
+## Структура проекта
+
+```
+src/
+├── app/
+│   ├── admin/              # Админ-панель
+│   ├── api/               # API маршруты
+│   ├── catalog/           # Страницы каталога
+│   ├── components/        # React компоненты
+│   ├── context/          # React контексты
+│   └── types/            # TypeScript типы
+├── lib/                  # Утилиты и конфигурация
+└── prisma/              # Схема базы данных
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Установка и запуск
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Предварительные требования
+- Node.js 18+
+- PostgreSQL
+- npm или yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Установка
 
-## Learn More
+1. Клонируйте репозиторий:
+```bash
+git clone https://github.com/Vlad-a-1132/ekvilibrium.git
+cd ekvilibrium
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Установите зависимости:
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Настройте переменные окружения:
+```bash
+cp .env.example .env
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Заполните `.env` файл:
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/erich_krause"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
+```
 
-## Deploy on Vercel
+4. Настройте базу данных:
+```bash
+npx prisma db push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Создайте администратора:
+```bash
+node scripts/create-admin.js
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. Запустите проект:
+```bash
+npm run dev
+```
+
+## Доступ к админ-панели
+- URL: `http://localhost:3000/admin/login`
+- Email: `admin@example.com`
+- Пароль: `admin123`
+
+## Модели данных
+
+### User (Пользователь)
+- id, name, email, password
+- role (USER | ADMIN)
+- isActive, timestamps
+
+### Category (Категория)
+- id, name, slug, description
+- order, isActive, timestamps
+
+### Product (Товар)
+- id, name, slug, description
+- price, oldPrice, images[], sku
+- stock, specifications (JSON)
+- categoryId, isActive, timestamps
+
+## API Endpoints
+
+### Публичные
+- `GET /api/categories` - Список категорий
+- `GET /api/products` - Список товаров
+- `GET /api/products/[id]` - Товар по ID
+
+### Админ (требует аутентификации)
+- `POST /api/admin/products` - Создание товара
+- `PUT /api/admin/products/[id]` - Обновление товара
+- `DELETE /api/admin/products/[id]` - Удаление товара
+- `POST /api/admin/categories` - Создание категории
+- `POST /api/admin/upload` - Загрузка изображений
+
+## Развертывание
+
+### Vercel
+1. Подключите GitHub репозиторий к Vercel
+2. Добавьте переменные окружения
+3. Разверните проект
+
+### Переменные окружения для продакшена:
+```env
+DATABASE_URL="your-production-db-url"
+NEXTAUTH_SECRET="your-production-secret"
+NEXTAUTH_URL="https://your-domain.com"
+```
+
+## Лицензия
+MIT
+
+## Поддержка
+При возникновении вопросов создавайте Issues в репозитории.
+
+---
+
+**Разработчик**: [Vlad-a-1132](https://github.com/Vlad-a-1132)  
+**Версия**: 1.0.0
